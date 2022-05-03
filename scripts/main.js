@@ -226,6 +226,9 @@ class LIFNeuron {
         // Die Refraktärzeit beginnt jetzt
         this.t_rest = this.tau_rest;
 
+        // signal
+        beep(2, 400, 100);
+
         return [this.u, this.t_rest];
     }
 
@@ -250,16 +253,48 @@ class LIFNeuron {
             return this.get_resting_op();
         } else if (this.u > this.u_thresh) {
             this.get_firing_op();
-            beep(2, 400, 100);
-            console.log("beep");
         } else {
             this.get_integrating_op();
         }
     }
 }
 
+function DrawGraph(divID, spannung, strom, zeit) {
+    var strom = {
+        x: zeit,
+        y: strom,
+        type: 'scatter',
+        name: 'Strom'
+    };
+
+    var spannung = {
+        x: zeit,
+        y: spannung,
+        type: 'scatter',
+        name: 'Spannung'
+    };
+
+    var data = [spannung, strom];
+
+    var layout = {
+        title: 'Strom und Spannung über die Zeit',
+        xaxis: {
+            title: 'Zeit in ms',
+            showgrid: false,
+            zeroline: false
+        },
+        yaxis: {
+            title: 'Stärke Strom / Spannung in mA, mV',
+            showline: false
+        }
+    };
+
+    Plotly.newPlot(divID, data, layout);
+}
+
 // Simulation with square input currents
-function test() {
+function pulseTest() {
+    // Audiocontext, need a manual interaction within the Browser
     myAudioContext = new AudioContext();
     // Duration of the simulation in ms
     const T = 200;
@@ -268,6 +303,7 @@ function test() {
     // Number of iterations = T/dt
     let steps = T / dt;
     // Output variables
+    let timePoint = [];
     let I = [];
     let U = [];
 
@@ -293,18 +329,53 @@ function test() {
         neuron.dt = 1;
 
         neuron.get_potential_op();
-        //feed = {i_app: i_app, dt: dt};
 
-        //u = sess.run(neuron.potential, feed_dict = feed)
-
-        console.log(neuron.u);
+        timePoint.push(t);
         I.push(neuron.i_app);
         U.push(neuron.u);
     }
 
-    //console.log(I.toString());
-    //console.log(U.toString());
-    //console.log(U.length);
+    DrawGraph("Diagramm", I, U, timePoint);
 }
 
-//test();
+// Simulation with square input currents
+function RandomTest() {
+    // Audiocontext, need a manual interaction within the Browser
+    myAudioContext = new AudioContext();
+    // Duration of the simulation in ms
+    const T = 200;
+    // Duration of each time step in ms
+    const dt = 1;
+    // Number of iterations = T/dt
+    let steps = T / dt;
+    // Output variables
+    let timePoint = [];
+    let I = [];
+    let U = [];
+
+    let neuron = new LIFNeuron();
+
+    for (x = 1; x <= steps; x++) {
+        let i_app = 0;
+
+        let t = x * dt;
+
+        // Set input current in mA
+        if (t > 10 && t < 180) {
+            i_app = d3.randomUniform(-1, 3);
+        } else {
+            i_app = 0.0;
+        }
+
+        neuron.i_app = i_app;
+        neuron.dt = 1;
+
+        neuron.get_potential_op();
+
+        timePoint.push(t);
+        I.push(neuron.i_app);
+        U.push(neuron.u);
+    }
+
+    DrawGraph("Diagramm", I, U, timePoint);
+}
