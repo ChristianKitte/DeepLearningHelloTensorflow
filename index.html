@@ -6,7 +6,7 @@
 
     <!-- Plotly. -->
     <!-- https://plotly.com/javascript/ -->
-    <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
+    <script mo src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
 
     <!-- Include d3.js from a CDN. -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.1.1/d3.js"></script>
@@ -16,13 +16,22 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.16.0/dist/tf.min.js"></script>
 
+    <script src="scripts/LIFNeuron.js"></script>
+    <script src="scripts/LIFSynapticNeuron.js"></script>
+
+    <script src="scripts/DrawGraph.js"></script>
+    <script src="scripts/Beep.js"></script>
+
     <script src="scripts/main.js"></script>
 </head>
 <body>
 <button onclick="pulseTest()">pulseTest</button>
 <button onclick="RandomTest()">RandomTest</button>
-<div id="Diagramm">
-
-</div>
+<p>Widerstand von 1 m Ohm bis 1 k Ohm</p>
+<p id="curR1">Aktueller Wert: </p>
+<input id="range1" type="range" min="0.001" max="2" step="0.001" value="1" onchange="dummy()">
+<div id="Diagramm1"></div>
+<div id="Diagramm2"></div>
+<div id="Diagramm3"></div>
 </body>
 </html>
