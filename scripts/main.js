@@ -200,7 +200,7 @@ function dummy(value) {
 }
 
 function feedNeuron(neuron, current, dt) {
-    let out = {I: 0, U: 0};
+    let out = {I: 0, U: 0, U_pulse: 0};
 
     neuron.i_app = current;
     neuron.dt = dt;
@@ -209,6 +209,7 @@ function feedNeuron(neuron, current, dt) {
 
     out.I = neuron.i_app;
     out.U = neuron.u;
+    out.U_pulse = neuron.u_out;
 
     return out;
 }
@@ -253,5 +254,46 @@ function RandomTest() {
         U.push(neuron.u);
     }
 
-    DrawGraph("Diagramm", U, I, timePoint);
+    DrawGraph("Diagramm1", U, I, timePoint);
+}
+
+
+function dynamicImpulse(duration = 400, deltaTimesteps = 1, durationPulse = 30, directCurrent = 1.2) {
+    let steps = duration / deltaTimesteps;
+
+    let timePoint = [];
+    let I = [];
+    let U = [];
+    let U_out = [];
+
+    let pulseState = false;
+    let timePulse = 0;
+
+    let neuron = new LIFNeuron();
+
+    for (let x = 1; x <= steps; x++) {
+        let i_app = 0;
+
+        let timeOverAll = x * deltaTimesteps;
+        timePulse = timePulse + deltaTimesteps;
+
+        if (timePulse >= durationPulse) {
+            pulseState = !pulseState;
+            timePulse = 0;
+        }
+
+        // Set input current in mA
+        if (pulseState) {
+            i_app = directCurrent;
+        }
+
+        let newState = feedNeuron(neuron, i_app, deltaTimesteps);
+
+        timePoint.push(timeOverAll);
+        I.push(newState.I);
+        U.push(newState.U);
+        U_out.push(newState.U_pulse);
+    }
+
+    DrawGraph2("Diagramm1", U, U_out, I, timePoint);
 }

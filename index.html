@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Hello TensorFlow</title>
 
+    <!-- Include W3.CSS. -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
     <!-- Plotly. -->
     <!-- https://plotly.com/javascript/ -->
     <script mo src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
@@ -14,24 +17,52 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.css" rel="stylesheet">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
 
+    <!-- Include Tensorflow. -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.16.0/dist/tf.min.js"></script>
 
+    <!-- Include Scrips for the App. -->
     <script src="scripts/LIFNeuron.js"></script>
     <script src="scripts/LIFSynapticNeuron.js"></script>
 
     <script src="scripts/DrawGraph.js"></script>
+    <script src="scripts/DrawGraph2.js"></script>
     <script src="scripts/Beep.js"></script>
 
     <script src="scripts/main.js"></script>
 </head>
 <body>
-<button onclick="pulseTest()">pulseTest</button>
-<button onclick="RandomTest()">RandomTest</button>
-<p>Widerstand von 1 m Ohm bis 1 k Ohm</p>
-<p id="curR1">Aktueller Wert: </p>
-<input id="range1" type="range" min="0.001" max="2" step="0.001" value="1" onchange="dummy()">
-<div id="Diagramm1"></div>
-<div id="Diagramm2"></div>
-<div id="Diagramm3"></div>
+
+
+<div class="w3-cell-row">
+    <div class="w3-container w3-red w3-cell" style="width: 30%">
+        <button onclick="pulseTest()">pulseTest</button>
+        <button onclick="RandomTest()">RandomTest</button>
+        <button onclick="dynamicImpulse()">DynamicTest</button>
+
+        <p>Widerstand von 1 m Ohm bis 1 k Ohm</p>
+
+        <div class="w3-cell-cell">
+            <div id="Diagramm1"></div>
+            <p id="curR1">Leitfähigkeit zum nächsten neuron: </p>
+            <input id="range1" type="range" min="0.001" max="2" step="0.001" value="1" onchange="dummy()">
+        </div>
+
+        <div class="w3-cell-cell">
+            <div id="Diagramm2"></div>
+            <p id="curR2">Leitfähigkeit zum nächsten neuron: </p>
+            <input id="range2" type="range" min="0.001" max="2" step="0.001" value="1" onchange="dummy()">
+        </div>
+
+        <div class="w3-cell-cell">
+            <div id="Diagramm3"></div>
+        </div>
+    </div>
+
+    <div class="w3-container w3-green w3-cell">
+
+    </div>
+
+</div>
+
 </body>
 </html>

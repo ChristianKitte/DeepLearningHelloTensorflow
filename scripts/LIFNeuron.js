@@ -33,6 +33,9 @@ class LIFNeuron {
         // The chosen time interval for the stimulation in ms
         // Das gewählte Zeitintervall für die Stimulation in ms
         this.dt = 0.0;
+
+        this.u_outValue = 1.0;
+        this.u_out = 0;
     }
 
     // Neuron behaviour during integration phase (below threshold)
@@ -47,7 +50,8 @@ class LIFNeuron {
         // Die Refraktärzeit beträgt 0
         this.t_rest = 0.0;
 
-        return [this.u, this.t_rest];
+        this.u_out = 0;
+        return [this.u, this.t_rest, this.u_out];
     }
 
     // Neuron behaviour during firing phase (above threshold)
@@ -64,7 +68,8 @@ class LIFNeuron {
         // signal
         beep(2, 400, 100);
 
-        return [this.u, this.t_rest];
+        this.u_out = this.u_outValue;
+        return [this.u, this.t_rest, this.u_out];
     }
 
     // Neuron behaviour during resting phase (t_rest > 0)
@@ -78,7 +83,8 @@ class LIFNeuron {
         // Die Refraktärzeit verringert sich um dt
         this.t_rest = this.t_rest - this.dt;
 
-        return [this.u, this.t_rest];
+        this.u_out = 0;
+        return [this.u, this.t_rest, this.u_out];
     }
 
 
